@@ -21,27 +21,24 @@ var initMap = function (coords) {
     });
 
     var polygon = [
-        new google.maps.LatLng(1.3786896, 103.8465828),
-        new google.maps.LatLng(1.3743115, 103.852645),
-        new google.maps.LatLng(1.3735577, 103.8600148),
-        new google.maps.LatLng(1.3845287, 103.8672423),
-        new google.maps.LatLng(1.3786896, 103.8465828)
+        new google.maps.LatLng(1.3818448,103.8458215),
+        new google.maps.LatLng(1.3698315,103.8499495),
+        new google.maps.LatLng(1.3700791,103.8657575),
+        new google.maps.LatLng(1.3874309,103.8696721),
+        new google.maps.LatLng(1.3818448,103.8458215)
     ];
 
     var geofence = new google.maps.Polygon({
-        paths: polygon
-    });
-
-    var fenceBorder = new google.maps.Polyline({
-        path: polygon,
+        paths: polygon,
         geodesic: true,
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
-        strokeWeight: 2
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.25
     });
 
-    fenceBorder.setMap(map);
-
+    geofence.setMap(map);
 
     google.maps.event.addListener(map, 'click', function(e) {
         var result;
