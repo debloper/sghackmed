@@ -1,3 +1,5 @@
+var map;
+
 var initMap = function (coords) {
 
     var position = {
@@ -13,12 +15,6 @@ var initMap = function (coords) {
 
     var map = new google.maps.Map(document.getElementById('map'),
                                   mapOptions);
-
-    var marker = new google.maps.Marker({
-        position: position,
-        map: map,
-        title: 'Location'
-    });
 
     var polygon = [
         new google.maps.LatLng(1.3818448,103.8458215),
@@ -40,36 +36,30 @@ var initMap = function (coords) {
 
     geofence.setMap(map);
 
-    google.maps.event.addListener(map, 'click', function(e) {
-        var result;
-        if (google.maps.geometry.poly.containsLocation(e.latLng, geofence)) {
-            result = 'red';
-        } else {
-            result = 'green';
-        }
+};
 
-        var circle = {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: result,
-            fillOpacity: .2,
-            strokeColor: 'white',
-            strokeWeight: .5,
-            scale: 10
+var keepPolling = function () {
+
+    $.get('/api', function (data) {
+        var position = {
+            lat: parseFloat(data.latitude),
+            lng: parseFloat(data.longitude)
         };
 
-        new google.maps.Marker({
-            position: e.latLng,
+        var marker = new google.maps.Marker({
+            position: position,
             map: map,
-            icon: circle
-        })
+            title: 'Location'
+        });
     });
 
+    window.setTimeout(keepPolling, 2000);
 };
 
 var getGeo = function () {
     $.get('/api', function (data) {
-        console.log(data);
         initMap(data);
+        keepPolling();
     });
 };
 

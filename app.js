@@ -15,14 +15,13 @@ app.use("/", express.static(path.join(__dirname, "static")));
 GLOBAL.response = {};
 
 app.get('/api', function(req, res, next) {
-  console.log(req.body);
-  res.json(response);
+	console.log(response);
+    res.json(response);
 });
 
 app.post('/api', function(req, res, next) {
-  console.log(req.body);
-  response = req.body;
-  res.json({ 'success': true });
+    response = req.body;
+    res.json({ 'success': true });
 });
 
 require('http').createServer(app).listen(8080, '0.0.0.0');
