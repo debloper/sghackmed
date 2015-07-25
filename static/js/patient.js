@@ -22,7 +22,9 @@ var initMap = function (coords) {
 var getGeo = function () {
     navigator.geolocation.getCurrentPosition ( function(position) {
         console.log("Obtained position", position);
+        console.log(position.coords);
         initMap(position.coords);
+        $.post('/api', position.coords, function (data) { console.log("!")});
     }, function() {});
 };
 

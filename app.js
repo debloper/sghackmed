@@ -10,17 +10,19 @@ var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use("/", express.static(path.join(__dirname, "static")));
 
 GLOBAL.response = {};
 
-app.post('/', function(req, res, next) {
+app.get('/api', function(req, res, next) {
+  console.log(req.body);
+  res.json(response);
+});
+
+app.post('/api', function(req, res, next) {
   console.log(req.body);
   response = req.body;
   res.json({ 'success': true });
-});
-
-app.get('/', function(req, res, next) {
-  res.json(response);
 });
 
 require('http').createServer(app).listen(8080, '0.0.0.0');
