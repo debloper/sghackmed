@@ -1,3 +1,5 @@
+var map, marker;
+
 var initMap = function (coords) {
 
     var position = { lat: coords.latitude, lng: coords.longitude};
@@ -17,14 +19,23 @@ var initMap = function (coords) {
         title: 'Location'
     });
 
+    $.post('/api', coords);
+
+    google.maps.event.addListener(map, 'click', function(e) {
+        marker.setMap(null);
+        marker = new google.maps.Marker({
+            position: e.latLng,
+            map: map,
+            title: 'Location'
+        });
+        $.post('/api', { latitude: e.latLng.A, longitude: e.latLng.F });
+    });
+
 };
 
 var getGeo = function () {
     navigator.geolocation.getCurrentPosition ( function(position) {
-        console.log("Obtained position", position);
-        console.log(position.coords);
         initMap(position.coords);
-        $.post('/api', position.coords, function (data) { console.log("!")});
     }, function() {});
 };
 
