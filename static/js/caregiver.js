@@ -1,4 +1,11 @@
-var map, marker;
+var map, marker, geofence;
+var polygon = [
+    new google.maps.LatLng(1.3818448, 103.8458215),
+    new google.maps.LatLng(1.3698315, 103.8499495),
+    new google.maps.LatLng(1.3700791, 103.8657575),
+    new google.maps.LatLng(1.3874309, 103.8696721),
+    new google.maps.LatLng(1.3818448, 103.8458215)
+];
 
 var initMap = function (coords) {
 
@@ -19,15 +26,7 @@ var initMap = function (coords) {
         title: 'Location'
     });
 
-    var polygon = [
-        new google.maps.LatLng(1.3818448, 103.8458215),
-        new google.maps.LatLng(1.3698315, 103.8499495),
-        new google.maps.LatLng(1.3700791, 103.8657575),
-        new google.maps.LatLng(1.3874309, 103.8696721),
-        new google.maps.LatLng(1.3818448, 103.8458215)
-    ];
-
-    var geofence = new google.maps.Polygon({
+    geofence = new google.maps.Polygon({
         paths: polygon,
         geodesic: true,
         strokeColor: '#FF0000',
@@ -58,6 +57,12 @@ var keepPolling = function () {
             map: map,
             title: 'Location'
         });
+
+        if (google.maps.geometry.poly.containsLocation(position, geofence)) {
+            $("#info").removeClass("codered").html("Hakuna Matata!");
+        } else {
+            $("#info").addClass("codered").html("Houston... we have a problem!");
+        }
 
         setTimeout(keepPolling, 2000);
     });
